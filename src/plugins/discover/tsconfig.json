@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["common/**/*", "public/**/*", "server/**/*", "../../../typings/**/*"],
+  "include": ["common/**/*", "public/**/*", "server/**/*", "../../../typings/**/*", "../console/public/**/*"],
   "references": [
     { "path": "../../core/tsconfig.json" },
     { "path": "../charts/tsconfig.json" },
@@ -23,6 +23,7 @@
     { "path": "../usage_collection/tsconfig.json" },
     { "path": "../kibana_utils/tsconfig.json" },
     { "path": "../kibana_react/tsconfig.json" },
-    { "path": "../kibana_legacy/tsconfig.json" }
+    { "path": "../kibana_legacy/tsconfig.json" },
+    { "path": "../console/tsconfig.json"}
   ]
 }

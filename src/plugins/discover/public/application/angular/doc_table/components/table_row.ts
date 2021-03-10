@@ -18,7 +18,7 @@ import { getServices } from '../../../../kibana_services';
 import { getContextUrl } from '../../../helpers/get_context_url';
 import { formatRow, formatTopLevelObject } from '../../helpers';
 // GPS-DFIR Modification
-import {send} from '../../../../../../../plugins/console/public/lib/es/es'
+import {send} from '../../../../../../../plugins/console/public/lib/es'
 
 const TAGS_WITH_WS = />\s+</g;
 
