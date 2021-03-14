@@ -32,6 +32,12 @@ export function send(
 ) {
   const wrappedDfd = $.Deferred();
 
+  //GPS-DFIR Modification
+  console.log("Method:" + method);
+  console.log("Path:" + path);
+  console.log("Data:" + data);
+  //GPS-DFIR Modification End
+
   const options: JQuery.AjaxSettings = {
     url: '../api/console/proxy?' + stringify({ path, method }, { sort: false }),
     headers: {

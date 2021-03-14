@@ -335,6 +335,7 @@ export class IndexPatternsService {
     }, {});
 
   /**
+   * GPS-DFIR Modification
    * Converts index pattern saved object to index pattern spec
    * @param savedObject
    * @returns IndexPatternSpec
@@ -347,6 +348,7 @@ export class IndexPatternsService {
       attributes: {
         title,
         timeFieldName,
+        irstatus,
         intervalName,
         fields,
         sourceFilters,
@@ -374,6 +376,7 @@ export class IndexPatternsService {
       title,
       intervalName,
       timeFieldName,
+      irstatus,
       sourceFilters: parsedSourceFilters,
       fields: this.fieldArrayToMap(parsedFields, parsedFieldAttrs),
       typeMeta: parsedTypeMeta,

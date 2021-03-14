@@ -35,6 +35,26 @@ export function getTimeColumn(timeFieldName: string): ColumnProps {
     colRightIdx: -1,
   };
 }
+
+/**
+ * GPS-DFIR Modification
+ * eturns properties necessary to display the selectable status column
+ * If it's an IndexPattern with irstatus, the status button is prepended,
+ * nor moveable and removable
+ * @param statusFieldName Record status of 'malicious' (red) or 'unknown' (white)
+ * @returns ColumnProps object
+ */
+export function getStatusColumn(irstatus: string): ColumnProps {
+  return {
+    name: irstatus,
+    displayName: 'Status',
+    isSortable: true,
+    isRemoveable: false,
+    colLeftIdx: -1,
+    colRightIdx: -1,
+  };
+}
+
 /**
  * A given array of column names returns an array of properties
  * necessary to display the columns. If the given indexPattern
@@ -80,7 +100,7 @@ export function getDisplayedColumns(
           };
         });
 
-  return !hideTimeField && indexPattern.timeFieldName
-    ? [getTimeColumn(indexPattern.timeFieldName), ...columnProps]
+  return !hideTimeField && indexPattern.timeFieldName && indexPattern.irstatus
+    ? [getTimeColumn(indexPattern.timeFieldName), getStatusColumn(indexPattern.irstatus), ...columnProps]
     : columnProps;
 }

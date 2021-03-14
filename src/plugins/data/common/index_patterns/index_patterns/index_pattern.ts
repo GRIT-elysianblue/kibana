@@ -51,6 +51,8 @@ export class IndexPattern implements IIndexPattern {
   public typeMeta?: TypeMeta;
   public fields: IIndexPatternFieldList & { toSpec: () => IndexPatternFieldMap };
   public timeFieldName: string | undefined;
+  //GPS-DFIR Modification
+  public irstatus: string | undefined;
   /**
    * @deprecated
    * Deprecated. used by time range index patterns
@@ -112,6 +114,7 @@ export class IndexPattern implements IIndexPattern {
 
     this.title = spec.title || '';
     this.timeFieldName = spec.timeFieldName;
+    this.irstatus = spec.irstatus;
     this.sourceFilters = spec.sourceFilters;
     this.fields.replaceAll(Object.values(spec.fields || {}));
     this.type = spec.type;
@@ -212,6 +215,7 @@ export class IndexPattern implements IIndexPattern {
 
       title: this.title,
       timeFieldName: this.timeFieldName,
+      irstatus: this.irstatus,
       sourceFilters: this.sourceFilters,
       fields: this.fields.toSpec({ getFormatterForField: this.getFormatterForField.bind(this) }),
       typeMeta: this.typeMeta,
@@ -296,6 +300,11 @@ export class IndexPattern implements IIndexPattern {
     return this.fields.getByName(this.timeFieldName);
   }
 
+  getStatusField() {
+    if (!this.irstatus || !this.fields || !this.fields.getByName) return undefined;
+    return this.fields.getByName(this.irstatus);
+  }
+
   getFieldByName(name: string): IndexPatternField | undefined {
     if (!this.fields || !this.fields.getByName) return undefined;
     return this.fields.getByName(name);
@@ -319,6 +328,7 @@ export class IndexPattern implements IIndexPattern {
       fieldAttrs: fieldAttrs ? JSON.stringify(fieldAttrs) : undefined,
       title: this.title,
       timeFieldName: this.timeFieldName,
+      irstatus: this.irstatus,
       intervalName: this.intervalName,
       sourceFilters: this.sourceFilters ? JSON.stringify(this.sourceFilters) : undefined,
       fields: this.fields
