@@ -34,6 +34,8 @@ export interface IIndexPattern {
   timeFieldName?: string;
   intervalName?: string | null;
   getTimeField?(): IFieldType | undefined;
+  irstatus?: string;
+  getStatusField?(): IFieldType | undefined;
   fieldFormatMap?: Record<string, SerializedFieldFormat<unknown> | undefined>;
   getFormatterForField?: (
     field: IndexPatternField | IndexPatternField['spec'] | IFieldType
@@ -46,6 +48,7 @@ export interface IndexPatternAttributes {
   title: string;
   typeMeta: string;
   timeFieldName?: string;
+  irstatus?: string;
   intervalName?: string;
   sourceFilters?: string;
   fieldFormatMap?: string;
@@ -179,6 +182,7 @@ export interface IndexPatternSpec {
   title?: string;
   intervalName?: string;
   timeFieldName?: string;
+  irstatus?: string;
   sourceFilters?: SourceFilter[];
   fields?: IndexPatternFieldMap;
   typeMeta?: TypeMeta;

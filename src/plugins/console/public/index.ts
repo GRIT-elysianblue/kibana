@@ -26,3 +26,6 @@ export { ConsoleUIPlugin as Plugin };
 export function plugin() {
   return new ConsoleUIPlugin();
 }
+
+// GPS-DFIR Modification
+export { send } from './lib/es'

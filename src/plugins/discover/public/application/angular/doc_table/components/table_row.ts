@@ -37,8 +37,12 @@ import { getServices } from '../../../../kibana_services';
 import { getContextUrl } from '../../../helpers/get_context_url';
 import { formatRow, formatTopLevelObject } from '../../helpers';
 // GPS-DFIR Modification
+<<<<<<< HEAD
 import {send} from '../../../../../../../plugins/console/public/lib/es/es'
 >>>>>>> 76b63d319be... Added button to discover page
+=======
+import {send} from '../../../../../../console/public'
+>>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
 
 const TAGS_WITH_WS = />\s+</g;
 
@@ -148,18 +152,19 @@ export function createTableRowDirective($compile: ng.ICompileService) {
         const indexPattern = $scope.indexPattern;
         $scope.flattenedRow = indexPattern.flattenHit(row);
         // GPS-DFIR Modification
-        indexPattern.irstatus = 'gpsdfir_status';
+        indexPattern.irstatus = true;
         // We just create a string here because its faster.
         const newHtmls = [openRowHtml];
 
         const mapping = indexPattern.fields.getByName;
         const hideTimeColumn = getServices().uiSettings.get(DOC_HIDE_TIME_COLUMN_SETTING, false);
+        // GPS-DFIR Modification
         if (indexPattern.timeFieldName && !hideTimeColumn) {
           newHtmls.push(
             cellTemplate({
               timefield: true,
-              // GPS-DFIR Modification
-              gpsdfir: false,
+              irstatus: true,
+              sourcefield: false,
               formatted: _displayField(row, indexPattern.timeFieldName),
               filterable: mapping(indexPattern.timeFieldName).filterable && $scope.filter,
               column: indexPattern.timeFieldName,
@@ -193,15 +198,19 @@ export function createTableRowDirective($compile: ng.ICompileService) {
                         "  }\n" +
                         "}\n";
           console.log("Query-on-click: " + method + " " + path + " " + data);
-
-          send(method,path,data);
+          console.log("Method:" + method);
+          console.log("Path:" + path);
+          console.log("Data:" + data)
+          return send(method,path,data);
         }
-        //console.log(indexPattern.fields.byName[row,'gpsdfir_status']);
-        //console.log(_displayField(row, 'gpsdfir_status'));
-        //console.log($scope.flattenedRow['gpsdfir_status']);
+        console.log(indexPattern.fields.byName[$scope.row,'gpsdfir_status']);
+        console.log($scope.indexPattern.irstatus)
+        console.log(_displayField(row, 'gpsdfir_status'));
+        console.log($scope.flattenedRow['gpsdfir_status']);
         newHtmls.push(cellTemplate({
-          gpsdfir: true,
+          irstatus: true,
           timefield: false,
+          sourcefield: true,
           formatted: '<button class="kuiButton" ng-click="$parent.irstatus = !$parent.irstatus" ng-class="{  \'kuiButton--danger\': $parent.irstatus, \'kuiButton--basic\': !$parent.irstatus }"><span class="kuiButton__icon kuiIcon fa-plus"></span></button>',
           filterable: false,
           column: 'gpsdfir_status'
@@ -215,10 +224,18 @@ export function createTableRowDirective($compile: ng.ICompileService) {
           newHtmls.push(
             cellTemplate({
               timefield: false,
+<<<<<<< HEAD
               sourcefield: column === '_source',
               formatted: _displayField(row, column, true),
               filterable: isFilterable,
               column,
+=======
+              irstatus: false,
+              sourcefield: true,
+              formatted,
+              filterable: false,
+              column: '__document__',
+>>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
             })
           );
 <<<<<<< HEAD
@@ -236,6 +253,7 @@ export function createTableRowDirective($compile: ng.ICompileService) {
               newHtmls.push(
                 cellTemplate({
                   timefield: false,
+                  irstatus: false,
                   sourcefield: true,
                   formatted: formatTopLevelObject(row, innerColumns, indexPattern),
                   filterable: false,
@@ -246,7 +264,7 @@ export function createTableRowDirective($compile: ng.ICompileService) {
               newHtmls.push(
                 cellTemplate({
                   timefield: false,
-                  gpsdfir: false,
+                  irstatus: false,
                   sourcefield: column === '_source',
                   formatted: _displayField(row, column, true),
                   filterable: isFilterable,

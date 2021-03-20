@@ -45,6 +45,26 @@ export function getTimeColumn(timeFieldName: string): ColumnProps {
     colRightIdx: -1,
   };
 }
+
+/**
+ * GPS-DFIR Modification
+ * eturns properties necessary to display the selectable status column
+ * If it's an IndexPattern with irstatus, the status button is prepended,
+ * nor moveable and removable
+ * @param statusFieldName Record status of 'malicious' (red) or 'unknown' (white)
+ * @returns ColumnProps object
+ */
+export function getStatusColumn(irstatus: string): ColumnProps {
+  return {
+    name: irstatus,
+    displayName: 'Status',
+    isSortable: true,
+    isRemoveable: false,
+    colLeftIdx: -1,
+    colRightIdx: -1,
+  };
+}
+
 /**
  * A given array of column names returns an array of properties
  * necessary to display the columns. If the given indexPattern
@@ -63,6 +83,7 @@ export function getDisplayedColumns(
   if (!Array.isArray(columns) || typeof indexPattern !== 'object' || !indexPattern.getFieldByName) {
     return [];
   }
+<<<<<<< HEAD
   const columnProps = columns.map((column, idx) => {
     const field = indexPattern.getFieldByName(column);
     return {
@@ -76,5 +97,36 @@ export function getDisplayedColumns(
   });
   return !hideTimeField && indexPattern.timeFieldName
     ? [getTimeColumn(indexPattern.timeFieldName), ...columnProps]
+=======
+
+  const columnProps =
+    columns.length === 0
+      ? [
+          {
+            name: '__document__',
+            displayName: i18n.translate('discover.docTable.tableHeader.documentHeader', {
+              defaultMessage: 'Document',
+            }),
+            isSortable: false,
+            isRemoveable: false,
+            colLeftIdx: -1,
+            colRightIdx: -1,
+          },
+        ]
+      : columns.map((column, idx) => {
+          const field = indexPattern.getFieldByName(column);
+          return {
+            name: column,
+            displayName: field?.displayName ?? column,
+            isSortable: !!(field && field.sortable),
+            isRemoveable: column !== '_source' || columns.length > 1,
+            colLeftIdx: idx - 1 < 0 ? -1 : idx - 1,
+            colRightIdx: idx + 1 >= columns.length ? -1 : idx + 1,
+          };
+        });
+
+  return !hideTimeField && indexPattern.timeFieldName && indexPattern.irstatus
+    ? [getTimeColumn(indexPattern.timeFieldName), getStatusColumn(indexPattern.irstatus), ...columnProps]
+>>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
     : columnProps;
 }
