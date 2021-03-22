@@ -83,21 +83,6 @@ export function getDisplayedColumns(
   if (!Array.isArray(columns) || typeof indexPattern !== 'object' || !indexPattern.getFieldByName) {
     return [];
   }
-<<<<<<< HEAD
-  const columnProps = columns.map((column, idx) => {
-    const field = indexPattern.getFieldByName(column);
-    return {
-      name: column,
-      displayName: isShortDots ? shortenDottedString(column) : column,
-      isSortable: field && field.sortable ? true : false,
-      isRemoveable: column !== '_source' || columns.length > 1,
-      colLeftIdx: idx - 1 < 0 ? -1 : idx - 1,
-      colRightIdx: idx + 1 >= columns.length ? -1 : idx + 1,
-    };
-  });
-  return !hideTimeField && indexPattern.timeFieldName
-    ? [getTimeColumn(indexPattern.timeFieldName), ...columnProps]
-=======
 
   const columnProps =
     columns.length === 0
@@ -127,6 +112,5 @@ export function getDisplayedColumns(
 
   return !hideTimeField && indexPattern.timeFieldName && indexPattern.irstatus
     ? [getTimeColumn(indexPattern.timeFieldName), getStatusColumn(indexPattern.irstatus), ...columnProps]
->>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
     : columnProps;
 }

@@ -32,17 +32,10 @@ import cellTemplateHtml from '../components/table_row/cell.html';
 import truncateByHeightTemplateHtml from '../components/table_row/truncate_by_height.html';
 import { esFilters } from '../../../../../../data/public';
 import { getServices } from '../../../../kibana_services';
-<<<<<<< HEAD
-=======
 import { getContextUrl } from '../../../helpers/get_context_url';
 import { formatRow, formatTopLevelObject } from '../../helpers';
 // GPS-DFIR Modification
-<<<<<<< HEAD
-import {send} from '../../../../../../../plugins/console/public/lib/es/es'
->>>>>>> 76b63d319be... Added button to discover page
-=======
 import {send} from '../../../../../../console/public'
->>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
 
 const TAGS_WITH_WS = />\s+</g;
 
@@ -158,8 +151,6 @@ export function createTableRowDirective($compile: ng.ICompileService) {
 
         const mapping = indexPattern.fields.getByName;
         const hideTimeColumn = getServices().uiSettings.get(DOC_HIDE_TIME_COLUMN_SETTING, false);
-        // GPS-DFIR Modification
-        if (indexPattern.timeFieldName && !hideTimeColumn) {
           newHtmls.push(
             cellTemplate({
               timefield: true,
@@ -172,10 +163,6 @@ export function createTableRowDirective($compile: ng.ICompileService) {
           );
         }
 
-<<<<<<< HEAD
-        $scope.columns.forEach(function (column: any) {
-          const isFilterable = mapping(column) && mapping(column).filterable && $scope.filter;
-=======
         // GPS-DFIR Modification
         if ($scope.flattenedRow['gpsdfir_status'] == 'malicious') {
           $scope.irstatus = true;
@@ -219,28 +206,17 @@ export function createTableRowDirective($compile: ng.ICompileService) {
 
         if ($scope.columns.length === 0 && $scope.useNewFieldsApi) {
           const formatted = formatRow(row, indexPattern);
->>>>>>> 76b63d319be... Added button to discover page
 
           newHtmls.push(
             cellTemplate({
               timefield: false,
-<<<<<<< HEAD
-              sourcefield: column === '_source',
-              formatted: _displayField(row, column, true),
-              filterable: isFilterable,
-              column,
-=======
               irstatus: false,
               sourcefield: true,
               formatted,
               filterable: false,
               column: '__document__',
->>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
             })
           );
-<<<<<<< HEAD
-        });
-=======
         } else {
           $scope.columns.forEach(function (column: string) {
             const isFilterable = mapping(column) && mapping(column).filterable && $scope.filter;
@@ -274,7 +250,6 @@ export function createTableRowDirective($compile: ng.ICompileService) {
             }
           });
         }
->>>>>>> 76b63d319be... Added button to discover page
 
         let $cells = $el.children();
         newHtmls.forEach(function (html, i) {

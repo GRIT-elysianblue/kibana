@@ -12,12 +12,9 @@
     "urlForwarding",
     "navigation",
     "uiActions",
-<<<<<<< HEAD
-    "visualizations"
-=======
+    "visualizations",
     "savedObjects",
     "console"
->>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
   ],
   "optionalPlugins": ["home", "share"],
   "requiredBundles": [

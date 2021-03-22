@@ -63,15 +63,13 @@ export class IndexPattern implements IIndexPattern {
   public typeMeta?: TypeMeta;
   public fields: IIndexPatternFieldList & { toSpec: () => IndexPatternFieldMap };
   public timeFieldName: string | undefined;
-<<<<<<< HEAD
-=======
+
   //GPS-DFIR Modification
   public irstatus: string | undefined;
   /**
    * @deprecated
    * Deprecated. used by time range index patterns
    */
->>>>>>> e9d1efef6dc... status buttons functioning, requires gpsdfir_status field added in logstash
   public intervalName: string | undefined;
   public type: string | undefined;
   public formatHit: {
