@@ -63,13 +63,7 @@ export class IndexPattern implements IIndexPattern {
   public typeMeta?: TypeMeta;
   public fields: IIndexPatternFieldList & { toSpec: () => IndexPatternFieldMap };
   public timeFieldName: string | undefined;
-
-  //GPS-DFIR Modification
   public irstatus: string | undefined;
-  /**
-   * @deprecated
-   * Deprecated. used by time range index patterns
-   */
   public intervalName: string | undefined;
   public type: string | undefined;
   public formatHit: {

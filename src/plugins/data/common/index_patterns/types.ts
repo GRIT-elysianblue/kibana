@@ -32,9 +32,9 @@ export interface IIndexPattern {
   id?: string;
   type?: string;
   timeFieldName?: string;
+  irstatus?: string;
   intervalName?: string | null;
   getTimeField?(): IFieldType | undefined;
-  irstatus?: string;
   getStatusField?(): IFieldType | undefined;
   fieldFormatMap?: Record<string, SerializedFieldFormat<unknown> | undefined>;
   getFormatterForField?: (

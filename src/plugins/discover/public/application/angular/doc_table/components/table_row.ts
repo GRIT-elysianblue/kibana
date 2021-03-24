@@ -32,8 +32,7 @@ import cellTemplateHtml from '../components/table_row/cell.html';
 import truncateByHeightTemplateHtml from '../components/table_row/truncate_by_height.html';
 import { esFilters } from '../../../../../../data/public';
 import { getServices } from '../../../../kibana_services';
-import { getContextUrl } from '../../../helpers/get_context_url';
-import { formatRow, formatTopLevelObject } from '../../helpers';
+
 // GPS-DFIR Modification
 import {send} from '../../../../../../console/public'
 
@@ -144,18 +143,21 @@ export function createTableRowDirective($compile: ng.ICompileService) {
       function createSummaryRow(row: any) {
         const indexPattern = $scope.indexPattern;
         $scope.flattenedRow = indexPattern.flattenHit(row);
-        // GPS-DFIR Modification
+        //GPS-DFIR Modification
         indexPattern.irstatus = true;
         // We just create a string here because its faster.
         const newHtmls = [openRowHtml];
 
         const mapping = indexPattern.fields.getByName;
         const hideTimeColumn = getServices().uiSettings.get(DOC_HIDE_TIME_COLUMN_SETTING, false);
+        //GPS-DFIR Modification
+
+        if (indexPattern.timeFieldName && !hideTimeColumn) {
           newHtmls.push(
             cellTemplate({
               timefield: true,
               irstatus: true,
-              sourcefield: false,
+              sourcefield: true,
               formatted: _displayField(row, indexPattern.timeFieldName),
               filterable: mapping(indexPattern.timeFieldName).filterable && $scope.filter,
               column: indexPattern.timeFieldName,
@@ -194,6 +196,7 @@ export function createTableRowDirective($compile: ng.ICompileService) {
         console.log($scope.indexPattern.irstatus)
         console.log(_displayField(row, 'gpsdfir_status'));
         console.log($scope.flattenedRow['gpsdfir_status']);
+
         newHtmls.push(cellTemplate({
           irstatus: true,
           timefield: false,
@@ -204,52 +207,20 @@ export function createTableRowDirective($compile: ng.ICompileService) {
         }));
         // GPS-DFIR Modification End
 
-        if ($scope.columns.length === 0 && $scope.useNewFieldsApi) {
-          const formatted = formatRow(row, indexPattern);
+        $scope.columns.forEach(function (column: any) {
+          const isFilterable = mapping(column) && mapping(column).filterable && $scope.filter;
 
           newHtmls.push(
             cellTemplate({
               timefield: false,
               irstatus: false,
-              sourcefield: true,
-              formatted,
-              filterable: false,
-              column: '__document__',
+              sourcefield: column === '_source',
+              formatted: _displayField(row, column, true),
+              filterable: isFilterable,
+              column,
             })
           );
-        } else {
-          $scope.columns.forEach(function (column: string) {
-            const isFilterable = mapping(column) && mapping(column).filterable && $scope.filter;
-            if ($scope.useNewFieldsApi && !mapping(column) && !row.fields[column]) {
-              const innerColumns = Object.fromEntries(
-                Object.entries(row.fields).filter(([key]) => {
-                  return key.indexOf(`${column}.`) === 0;
-                })
-              );
-              newHtmls.push(
-                cellTemplate({
-                  timefield: false,
-                  irstatus: false,
-                  sourcefield: true,
-                  formatted: formatTopLevelObject(row, innerColumns, indexPattern),
-                  filterable: false,
-                  column,
-                })
-              );
-            } else {
-              newHtmls.push(
-                cellTemplate({
-                  timefield: false,
-                  irstatus: false,
-                  sourcefield: column === '_source',
-                  formatted: _displayField(row, column, true),
-                  filterable: isFilterable,
-                  column,
-                })
-              );
-            }
-          });
-        }
+        });
 
         let $cells = $el.children();
         newHtmls.forEach(function (html, i) {

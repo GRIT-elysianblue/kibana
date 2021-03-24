@@ -326,7 +326,6 @@ export class IndexPatternsService {
     }, {});
 
   /**
-   * GPS-DFIR Modification
    * Converts index pattern saved object to index pattern spec
    * @param savedObject
    */
